@@ -1,10 +1,8 @@
 import msvcrt
 
-def getch_windows():
-    while msvcrt.kbhit():
-        msvcrt.getch()
-    ch = msvcrt.getch()
-    while ch.decode() in '\x00\xe0':
-        msvcrt.getch()
-        ch = msvcrt.getch()
-    return ch.decode()
+def getch_windows(NONBLOCK=False):
+    if NONBLOCK:
+		if msvcrt.kbhit():
+			return msvcrt.getch().decode()
+	else:
+		return msvcrt.getch().decode()
