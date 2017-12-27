@@ -20,7 +20,7 @@ def getkey(getch_fn=None):
             ct = getch(NONBLOCK=True)
             c += ct
         return c
-    else:
+    if getch_fn:
         # if an external function is given then assume NONBLOCK flag is not set
         #  keep reading and check for escape sequences
         c1 = getchar_fn()
