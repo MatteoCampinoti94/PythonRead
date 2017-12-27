@@ -9,38 +9,46 @@ elif sys.platform in ('win32', 'cygwin'):
 else:
     raise NotImplemented('Platform "%s" not implemented' % sys.platform)
 
-def getkey(getch_fn=None):
+def getkey(getch_fn=None, encoding='utf-8'):
     if getch_fn:
         # if an external function is given then assume NONBLOCK flag is not set
         #  keep reading and check for escape sequences
-        c1 = getchar_fn()
+        c1 = getch_fn()
         if ord(c1) != 0x1b:
             return c1
-        c2 = getchar_fn()
+        c2 = getch_fn()
         if ord(c2) != 0x5b:
             return c1 + c2
-        c3 = getchar_fn()
+        c3 = getch_fn()
         if ord(c3) != 0x33:
             return c1 + c2 + c3
-        c4 = getchar_fn()
+        c4 = getch_fn()
         return c1 + c2 + c3 + c4
     else:
         # read first character from stdin
-        c = getch()
+        c = getch(NONBLOCK=False, encoding=encoding)
         ct = None
         # keep reading from stdin with NONBLOCK flag until it returns empty
         #  meaning stdin has no more characters stored
         while ct != '':
-            ct = getch(NONBLOCK=True)
+            ct = getch(NONBLOCK=True, encoding=encoding)
             c += ct
         return c
 
-def getline(getch_fn=None):
-    getchar = getch_fn or getch
-    l = ''
-    lt = ''
-    # keep reading till a return or newline entered
-    while lt not in ('\r', '\n'):
-        l += lt
-        lt = getchar()
-    return l
+def getline(getch_fn=None, encoding='utf-8'):
+    if getch_fn:
+        l = ''
+        lt = ''
+        # keep reading till a return or newline entered
+        while lt not in ('\r', '\n'):
+            l += lt
+            lt = getch_fn()
+        return l
+    else:
+        l = ''
+        lt = ''
+        # keep reading till a return or newline entered
+        while lt not in ('\r', '\n'):
+            l += lt
+            lt = getch(NONBLOCK=False, encoding=encoding)
+        return l
