@@ -21,6 +21,8 @@ def getkey(getch_fn=None):
             c += ct
         return c
     else:
+        # if an external function is given then assume NONBLOCK flag is not set
+        #  keep reading and check for escape sequences
         c1 = getchar_fn()
         if ord(c1) != 0x1b:
             return c1
@@ -32,3 +34,13 @@ def getkey(getch_fn=None):
             return c1 + c2 + c3
         c4 = getchar_fn()
         return c1 + c2 + c3 + c4
+
+def getline(getch_fn=None):
+    getchar = getch_fn or getch
+    l = ''
+    lt = ''
+    # keep reading till a return or newline entered
+    while lt not in ('\r', '\n'):
+        l += lt
+        lt = getchar()
+    return l

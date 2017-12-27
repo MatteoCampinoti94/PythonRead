@@ -1,1 +1,1 @@
-from .read import getch, getkey
+from .read import getch, getkey, getline
