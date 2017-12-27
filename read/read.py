@@ -10,16 +10,6 @@ else:
     raise NotImplemented('Platform "%s" not implemented' % sys.platform)
 
 def getkey(getch_fn=None):
-    if not getch_fn:
-        # read first character from stdin
-        c = getch()
-        ct = None
-        # keep reading from stdin with NONBLOCK flag until it returns empty
-        #  meaning stdin has no more characters stored
-        while ct != '':
-            ct = getch(NONBLOCK=True)
-            c += ct
-        return c
     if getch_fn:
         # if an external function is given then assume NONBLOCK flag is not set
         #  keep reading and check for escape sequences
@@ -34,6 +24,16 @@ def getkey(getch_fn=None):
             return c1 + c2 + c3
         c4 = getchar_fn()
         return c1 + c2 + c3 + c4
+    else:
+        # read first character from stdin
+        c = getch()
+        ct = None
+        # keep reading from stdin with NONBLOCK flag until it returns empty
+        #  meaning stdin has no more characters stored
+        while ct != '':
+            ct = getch(NONBLOCK=True)
+            c += ct
+        return c
 
 def getline(getch_fn=None):
     getchar = getch_fn or getch
