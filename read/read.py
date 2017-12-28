@@ -37,16 +37,14 @@ def getkey(getch_fn=None, encoding=None):
 
 def getline(getch_fn=None, encoding=None):
     if getch_fn:
-        l = ''
-        lt = ''
+        l, lt = '', ''
         # keep reading till a return or newline entered
         while lt not in ('\r', '\n'):
             l += lt
             lt = getch_fn()
         return l
     else:
-        l = ''
-        lt = ''
+        l, lt = '', ''
         # keep reading till a return or newline entered
         while lt not in ('\r', '\n'):
             l += lt
