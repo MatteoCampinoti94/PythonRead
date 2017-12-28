@@ -9,7 +9,7 @@ elif sys.platform in ('win32', 'cygwin'):
 else:
     raise NotImplemented('Platform "%s" not implemented' % sys.platform)
 
-def getkey(getch_fn=None, encoding='utf-8'):
+def getkey(getch_fn=None, encoding=None):
     if getch_fn:
         # if an external function is given then assume NONBLOCK flag is not set
         #  keep reading and check for escape sequences
@@ -35,7 +35,7 @@ def getkey(getch_fn=None, encoding='utf-8'):
             c += ct
         return c
 
-def getline(getch_fn=None, encoding='utf-8'):
+def getline(getch_fn=None, encoding=None):
     if getch_fn:
         l = ''
         lt = ''
