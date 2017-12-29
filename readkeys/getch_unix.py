@@ -1,13 +1,15 @@
 import sys, tty, termios
 import fcntl, os
 
-def getch_unix(NONBLOCK=False, encoding=None):
+def getch_unix(NONBLOCK=False, encoding=None, raw=True):
     fd = sys.stdin.fileno()
-    settings = termios.tcgetattr(fd)
+    if raw:
+        settings = termios.tcgetattr(fd)
     flags = fcntl.fcntl(fd, fcntl.F_GETFL)
     ch = ''
     try:
-        tty.setraw(fd)
+        if raw:
+            tty.setraw(fd)
         if NONBLOCK:
             fcntl.fcntl(fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
         if encoding:
@@ -20,5 +22,6 @@ def getch_unix(NONBLOCK=False, encoding=None):
             ch = sys.stdin.read(1)
     finally:
         fcntl.fcntl(fd, fcntl.F_SETFL, flags)
-        termios.tcsetattr(fd, termios.TCSADRAIN, settings)
+        if raw:
+            termios.tcsetattr(fd, termios.TCSADRAIN, settings)
     return ch
