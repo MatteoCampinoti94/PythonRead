@@ -1,10 +1,9 @@
 import subprocess, sys
 
-python_v = 'python3'
-if 2 in sys.argv[1:len(argv)]:
-    python_v = 'python2'
+python_v = '.'.join([str(v) for v in sys.version_info[0:3]])
+sys.stdout.write('Testing with python version %s\n\n' % python_v)
 
-proc = subprocess.Popen([f'{python_v}', 'test.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+proc = subprocess.Popen(['python%s' % python_v[0], 'test.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 keys = {
     'LF': '\x0d',
@@ -50,7 +49,7 @@ keys = {
 
 for i in keys :
     sin = str(keys[i])
-    print('Test:', i, sin.encode(), end=' ')
+    sys.stdout.write('Test: %s %s ' % (i, sin.encode()))
     proc.stdin.write(sin.encode())
     proc.stdin.flush()
     c, sout = '', ''
@@ -58,6 +57,6 @@ for i in keys :
         sout += c
         c = proc.stdout.read(1).decode()
     if sin == sout:
-        print('Okay')
+        sys.stdout.write('Okay\n')
     else:
-        print('Failed')
+        sys.stdout.write('Failed\n')
