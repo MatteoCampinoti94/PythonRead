@@ -53,6 +53,8 @@ escape_sequences = {
     'SUPR': '\x1b\x5b\x33\x7e',
     'ENDTEST': '$'
     }
+characters = {str(i): chr(i) for i in range(0, 128) if chr(i) != '$'}
+characters.update({'ENDTEST': '$'})
 
 def test(keys):
     errors = []
@@ -88,6 +90,10 @@ errorsc = []
 sys.stdout.write('\nTesting readkeys.getch()\n---------------------\n')
 sys.stdout.write('Testing special keys\n')
 errorsc.extend(test(keys))
+
+sys.stdout.write('\nTesting readkeys.getch()\n---------------------\n')
+sys.stdout.write('Testing characters from decimal 0 through 127\n')
+errorsc.extend(test(characters))
 
 sys.stdout.write('\nErrors\n---------------------\n')
 if len(errorsk) > 0:
