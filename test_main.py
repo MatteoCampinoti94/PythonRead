@@ -86,26 +86,25 @@ errorsk.extend(test(keys))
 sys.stdout.write('\nTesting escape sequences\n')
 errorsk.extend(test(escape_sequences))
 
+sys.stdout.write('\nTesting characters from decimal 0 through 127\n')
+errorsk.extend(test(characters))
+
 errorsc = []
 sys.stdout.write('\nTesting readkeys.getch()\n---------------------\n')
 sys.stdout.write('Testing special keys\n')
 errorsc.extend(test(keys))
 
-sys.stdout.write('\nTesting readkeys.getch()\n---------------------\n')
-sys.stdout.write('Testing characters from decimal 0 through 127\n')
-errorsc.extend(test(characters))
-
 sys.stdout.write('\nErrors\n---------------------\n')
 if len(errorsk) > 0:
     sys.stdout.write('There were %d errors in getkey:\n' % len(errorsk))
     for e in errorsk:
-        sys.stdout.write(e[0] + ' ' + str(e[1].encode()) + '\n')
+        sys.stdout.write(e[0] + ' ' + str(e[1].encode('utf-8')) + '\n')
 else:
     sys.stdout.write('There were no errors in getkey!\n')
 
 if len(errorsc) > 0:
     sys.stdout.write('There were %d errors in getch:\n' % len(errorsc))
     for e in errorsc:
-        sys.stdout.write(e[0] + ' ' + str(e[1].encode()) + '\n')
+        sys.stdout.write(e[0] + ' ' + str(e[1].encode('utf-8')) + '\n')
 else:
     sys.stdout.write('There were no errors in getch!\n')
