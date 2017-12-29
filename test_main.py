@@ -19,6 +19,9 @@ keys = {
     'CTRL_E': '\x05',
     'CTRL_F': '\x06',
     'CTRL_Z': '\x1a',
+    'ENDTEST': '$'
+    }
+escape_sequences = {
     'ALT_A': '\x1b\x61',
     'CTRL_ALT_A': '\x1b\x01',
     'UP': '\x1b\x5b\x41',
@@ -47,16 +50,46 @@ keys = {
     'ENDTEST': '$'
     }
 
-for i in keys :
-    sin = str(keys[i])
-    sys.stdout.write('Test: %s %s ' % (i, sin.encode()))
-    proc.stdin.write(sin.encode())
-    proc.stdin.flush()
-    c, sout = '', ''
-    while c != '#':
-        sout += c
-        c = proc.stdout.read(1).decode()
-    if sin == sout:
-        sys.stdout.write('Okay\n')
-    else:
-        sys.stdout.write('Failed\n')
+def test(keys):
+    errors = []
+    for i in keys :
+        sin = keys[i]
+        sys.stdout.write('%s %s ' % (i, sin.encode()))
+        proc.stdin.write(sin.encode())
+        proc.stdin.flush()
+        c, sout = '', ''
+        while c != '#':
+            sout += c
+            c = proc.stdout.read(1).decode()
+        if sin == sout:
+            sys.stdout.write('Okay\n')
+        else:
+            sys.stdout.write('Failed\n')
+            errors.append([i, keys[i]])
+    return errors
+
+errorsk = []
+sys.stdout.write('Testing readkeys.getkey()\n---------------------\n')
+sys.stdout.write('Testing special keys\n')
+errorsk.extend(test(keys))
+
+sys.stdout.write('\nTesting escape sequences\n')
+errorsk.extend(test(escape_sequences))
+
+errorsc = []
+sys.stdout.write('\nTesting readkeys.getch()\n---------------------\n')
+sys.stdout.write('Testing special keys\n')
+errorsc.extend(test(keys))
+
+sys.stdout.write('\nErrors\n---------------------\n')
+if len(errorsk) > 0:
+    sys.stdout.write('There were %d errors in getkey:\n' % len(errorsk))
+    sys.stdout.write('\n'.join(errors))
+else:
+    sys.stdout.write('There were no errors in getkey!\n')
+
+if len(errorsc) > 0:
+    sys.stdout.write('There were %d errors in getch:\n' % len(errorsc))
+    sys.stdout.write('\n'.join(errorsc))
+else:
+    sys.stdout.write('There were no errors in getch!\n')
