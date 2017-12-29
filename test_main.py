@@ -62,12 +62,16 @@ def test(keys):
         proc.stdin.write(sin.encode())
         proc.stdin.flush()
         c, sout = '', ''
-        while c != '#':
-            sout += c
-            c = proc.stdout.read(1).decode()
-        if sin == sout:
-            sys.stdout.write('Okay\n')
-        else:
+        try:
+            while c != '#':
+                sout += c
+                c = proc.stdout.read(1).decode()
+            if sin == sout:
+                sys.stdout.write('Okay\n')
+            else:
+                sys.stdout.write('Failed\n')
+                errors.append([i, keys[i]])
+        except:
             sys.stdout.write('Failed\n')
             errors.append([i, keys[i]])
     return errors
@@ -88,12 +92,14 @@ errorsc.extend(test(keys))
 sys.stdout.write('\nErrors\n---------------------\n')
 if len(errorsk) > 0:
     sys.stdout.write('There were %d errors in getkey:\n' % len(errorsk))
-    sys.stdout.write('\n'.join(errors))
+    for e in errorsk:
+        sys.stdout.write(e[0] + ' ' + str(e[1].encode()) + '\n')
 else:
     sys.stdout.write('There were no errors in getkey!\n')
 
 if len(errorsc) > 0:
     sys.stdout.write('There were %d errors in getch:\n' % len(errorsc))
-    sys.stdout.write('\n'.join(errorsc))
+    for e in errorsc:
+        sys.stdout.write(e[0] + ' ' + str(e[1].encode()) + '\n')
 else:
     sys.stdout.write('There were no errors in getch!\n')
