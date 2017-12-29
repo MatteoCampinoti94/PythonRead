@@ -3,6 +3,10 @@ import subprocess, sys
 python_v = '.'.join([str(v) for v in sys.version_info[0:3]])
 sys.stdout.write('Testing with python version %s\n\n' % python_v)
 
+if python_v[0] != '3':
+    sys.stdout.write('Module not yet compatible with Python < 3.x\n')
+    sys.exit(1)
+
 proc = subprocess.Popen(['python%s' % python_v[0], 'test.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 keys = {
