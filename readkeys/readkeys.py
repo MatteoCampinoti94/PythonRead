@@ -50,3 +50,8 @@ def getline(getch_fn=None, encoding=None):
             l += lt
             lt = getch(NONBLOCK=False, encoding=encoding)
         return l
+
+def flush():
+    c = None
+    while c != '':
+        c = getch(NONBLOCK=True)
