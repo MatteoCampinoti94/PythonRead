@@ -33,11 +33,11 @@ def getkey(getch_fn=None, encoding=None, raw=True):
         while ct != '':
             ct = getch(NONBLOCK=True, encoding=encoding, raw=raw)
             c += ct
-        if raw:
+        if not raw:
             c = c[0:-1]
         return c
 
-def getline(getch_fn=None, encoding=None):
+def getline(getch_fn=None, encoding=None, raw=True):
     if getch_fn:
         l, lt = '', ''
         # keep reading till a return or newline entered
