@@ -55,5 +55,8 @@ def getline(getch_fn=None, encoding=None, raw=True):
 
 def flush():
     c = None
+    r = ''
     while c != '':
         c = getch(NONBLOCK=True, raw=False)
+        r += c
+    return r
