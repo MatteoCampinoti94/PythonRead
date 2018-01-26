@@ -66,7 +66,7 @@ def input(prompt=''):
     c = ''
     s = []
     while c not in ('\r', '\n', '\x03', '\x04'):
-        if c == '\x7f':
+        if c in ('\x7f', '\x08'):
             if len(s):
                 print('\b \b'*len(s[-1]), end='', flush=True)
                 s = s[0:-1]
