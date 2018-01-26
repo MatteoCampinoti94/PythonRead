@@ -60,3 +60,26 @@ def flush():
         c = getch(NONBLOCK=True, raw=False)
         r += c
     return r
+
+def input(prompt=''):
+    print(prompt, end='', flush=True)
+    c = ''
+    s = []
+    while c not in ('\r', '\n', '\x03', '\x04'):
+        if c == '\x7f':
+            if len(s):
+                print('\b \b'*len(s[-1]), end='', flush=True)
+                s = s[0:-1]
+        else:
+            print(c, end='', flush=True)
+            s.append(c)
+        c = getkey()
+    print()
+    if c in ('\r', '\n'):
+        return ''.join(s)
+    elif c == '\x03':
+        raise KeyboardInterrupt
+    elif c == '\x04':
+        raise EOFError
+    else:
+        return ''
