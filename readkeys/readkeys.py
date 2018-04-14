@@ -64,15 +64,28 @@ def flush():
 def input(prompt=''):
     print(prompt, end='', flush=True)
     c = ''
-    s = []
+    s = ''
+    i = 0
     while c not in ('\r', '\n', '\x03', '\x04'):
+        print('\r'+' '*len(s), end='\r', flush=True)
         if c in ('\x7f', '\x08'):
-            if len(s):
-                print('\b \b'*len(s[-1]), end='', flush=True)
-                s = s[0:-1]
+            if i == len(s):
+                i -= 1
+            s = s[0:i] + s[i+1:]
+        elif c == '\x1b[D': #left
+            i -= 1
+        elif c == '\x1b[C': #right
+            i += 1
         else:
-            print(c, end='', flush=True)
-            s.append(c)
+            s = s[0:i] + c + s[i+1:]
+            i += 1
+        print(s, end='\b'*(len(s)-i), flush=True)
+
+        if i > len(s):
+            i = len(s)
+        if i < 0:
+            i = 0
+
         c = getkey()
     print()
     if c in ('\r', '\n'):
