@@ -68,6 +68,7 @@ def input(prompt=''):
     i = 0
     while c not in ('\r', '\n', '\x03', '\x04'):
         print('\r'+' '*len(s), end='\r', flush=True)
+
         if c in ('\x7f', '\x08'):
             if i == len(s):
                 i -= 1
@@ -79,12 +80,13 @@ def input(prompt=''):
         else:
             s = s[0:i] + c + s[i+1:]
             i += 1
-        print(s, end='\b'*(len(s)-i), flush=True)
 
         if i > len(s):
             i = len(s)
         if i < 0:
             i = 0
+
+        print(prompt+s, end='\b'*(len(s)-i), flush=True)
 
         c = getkey()
     print()
