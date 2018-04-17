@@ -67,7 +67,7 @@ def input(prompt=''):
     s = ''
     i = 0
     while c not in ('\r', '\n', '\x03', '\x04'):
-        print('\r'+' '*len(s), end='\r', flush=True)
+        print('\r'+' '*len(s+prompt), end='\r', flush=True)
 
         if c in ('\x7f', '\x08'):
             if i == len(s):
