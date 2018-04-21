@@ -1,1 +1,1 @@
-from .readkeys import *
+readkeys/__init__.py
