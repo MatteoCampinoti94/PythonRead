@@ -1,1 +1,1 @@
-from .readkeys import getch, getkey, getline, flush, input
+from .readkeys import *
