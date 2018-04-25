@@ -61,7 +61,7 @@ def flush():
         r += c
     return r
 
-def input(prompt=''):
+def input(prompt='', prompt_end=''):
     print(prompt, end='', flush=True)
     c = ''
     s = ''
@@ -89,7 +89,7 @@ def input(prompt=''):
         print(prompt+s, end='\b'*(len(s)-i), flush=True)
 
         c = getkey()
-    print()
+    print(prompt_end)
     if c in ('\r', '\n'):
         return ''.join(s)
     elif c == '\x03':
