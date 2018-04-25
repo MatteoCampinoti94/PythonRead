@@ -62,6 +62,9 @@ def flush():
     return r
 
 def input(prompt='', prompt_end=''):
+    if type(prompt) != str or type(prompt_end) != str:
+        raise TypeError
+
     print(prompt, end='', flush=True)
     c = ''
     s = ''
